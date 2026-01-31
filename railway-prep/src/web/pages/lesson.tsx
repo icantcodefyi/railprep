@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import AIChat from "../components/ai-chat";
-import {
-  mockLesson,
-  type LessonData,
-} from "../../data/mockLessonData";
+import { mockLesson, type LessonData } from "../../data/mockLessonData";
 
 const ChevronLeft = ({ className }: { className?: string }) => (
   <svg
@@ -130,7 +127,6 @@ const NoteIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-
 const CheckIcon = ({ className }: { className?: string }) => (
   <svg
     className={className}
@@ -156,9 +152,16 @@ function renderMarkdown(content: string) {
           key={elements.length}
           className="list-disc list-inside space-y-1 mb-4 text-gray-700"
         >
-          {listItems.map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
+          {listItems.map((item, i) => {
+            // Handle bold text in list items
+            const formatted = item.replace(
+              /\*\*(.*?)\*\*/g,
+              "<strong>$1</strong>"
+            );
+            return (
+              <li key={i} dangerouslySetInnerHTML={{ __html: formatted }} />
+            );
+          })}
         </ul>
       );
       listItems = [];
@@ -422,9 +425,9 @@ export default function LessonPage() {
                 <h4 className="font-semibold text-[#1F2937] text-sm mb-2">
                   {note.title}
                 </h4>
-                <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
-                  {note.content}
-                </p>
+                <div className="text-sm text-gray-700 leading-relaxed prose-sm max-w-none">
+                  {renderMarkdown(note.content)}
+                </div>
               </div>
             ))}
           </div>
@@ -451,9 +454,9 @@ export default function LessonPage() {
                 <h4 className="font-semibold text-[#1F2937] text-sm mb-2">
                   {note.title}
                 </h4>
-                <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
-                  {note.content}
-                </p>
+                <div className="text-sm text-gray-700 leading-relaxed prose-sm max-w-none">
+                  {renderMarkdown(note.content)}
+                </div>
               </div>
             ))}
           </div>

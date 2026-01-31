@@ -71,6 +71,7 @@ export default function PracticePage() {
   const [examMode, setExamMode] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
+  const [modeSelected, setModeSelected] = useState(false);
 
   useEffect(() => {
     // Fetch chapter info
@@ -91,14 +92,19 @@ export default function PracticePage() {
 
     // Fetch MCQs
     fetch(`/api/v1/chapters/${chapterId}/mcqs?limit=50`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("API failed");
+        }
+        return res.json();
+      })
       .then((data) => {
-        if (data.success) {
+        if (data.success && data.data && data.data.length > 0) {
           setMcqs(data.data);
           // Set timer for exam mode (1 minute per question)
           setTimeLeft(data.data.length * 60);
         } else {
-          // Use mock data
+          // Use mock data if no data from API
           setMcqs(mockMCQs);
           setTimeLeft(mockMCQs.length * 60);
         }
@@ -138,6 +144,12 @@ export default function PracticePage() {
   const startExamMode = () => {
     setExamMode(true);
     setTimerActive(true);
+    setModeSelected(true);
+  };
+
+  const startPracticeMode = () => {
+    setExamMode(false);
+    setModeSelected(true);
   };
 
   const currentMCQ = mcqs[currentIndex];
@@ -169,7 +181,7 @@ export default function PracticePage() {
       }
     } catch (error) {
       // Use mock data for checking
-      const mockMCQ = mockMCQs.find(m => m.id === currentMCQ.id);
+      const mockMCQ = mockMCQs.find((m) => m.id === currentMCQ.id);
       if (mockMCQ) {
         const isCorrect = selectedOption === mockMCQ.correctOption;
         const result: AnswerResult = {
@@ -202,6 +214,9 @@ export default function PracticePage() {
     setResult(null);
     setScore({ correct: 0, total: 0 });
     setFinished(false);
+    setModeSelected(false);
+    setExamMode(false);
+    setTimerActive(false);
   };
 
   if (loading) {
@@ -299,7 +314,7 @@ export default function PracticePage() {
   ];
 
   // Show exam mode selector if not started
-  if (!examMode && !timerActive && !finished && score.total === 0) {
+  if (!modeSelected && !finished) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#F9FAFB] via-white to-[#FFF1F2] flex items-center justify-center p-5">
         <div className="max-w-2xl w-full bg-white rounded-3xl p-10 shadow-2xl border-2 border-gray-100">
@@ -312,7 +327,7 @@ export default function PracticePage() {
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <button
-              onClick={() => setExamMode(false)}
+              onClick={startPracticeMode}
               className="p-8 rounded-2xl border-2 border-gray-200 hover:border-[#EB4B7A] hover:shadow-lg transition-all text-left group"
             >
               <div className="w-14 h-14 rounded-xl bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-500 transition-colors">
