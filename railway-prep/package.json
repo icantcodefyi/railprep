@@ -5,6 +5,7 @@
   "dependencies": {
     "@ai-sdk/google": "^3.0.18",
     "@ai-sdk/openai": "^3.0.7",
+    "@elevenlabs/react": "^0.13.1",
     "@radix-ui/react-slot": "^1.2.4",
     "ai": "^6.0.25",
     "atmn": "^0.0.36",

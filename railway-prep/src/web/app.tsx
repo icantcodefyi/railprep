@@ -8,6 +8,7 @@ import PracticePage from "./pages/practice";
 import Dashboard from "./pages/dashboard";
 import SearchPage from "./pages/search";
 import FlashcardsPage from "./pages/flashcards";
+import VoiceAssistant from "./pages/voice-assistant";
 import { Provider } from "./components/provider";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" component={Index} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/search" component={SearchPage} />
+        <Route path="/voice-assistant" component={VoiceAssistant} />
         <Route path="/exam/:examId" component={ExamPage} />
         <Route path="/subject/:subjectId" component={SubjectPage} />
         <Route path="/chapter/:chapterId" component={ChapterPage} />

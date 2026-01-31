@@ -72,14 +72,9 @@ export default function Index() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Link href="/search">
-                <a className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#EB4B7A] hover:bg-gray-100 rounded-xl transition-all">
-                  Search
-                </a>
-              </Link>
-              <Link href="/dashboard">
-                <a className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#EB4B7A] to-[#F58FB0] text-white rounded-xl hover:shadow-lg transition-all">
-                  Dashboard
+              <Link href="/voice-assistant">
+                <a className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#8b9a7d] hover:bg-gray-100 rounded-xl transition-all">
+                  AI Voice
                 </a>
               </Link>
             </div>
