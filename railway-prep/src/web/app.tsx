@@ -20,12 +20,9 @@ function App() {
         <Route path="/exam/:examId" component={ExamPage} />
         <Route path="/subject/:subjectId" component={SubjectPage} />
         <Route path="/chapter/:chapterId" component={ChapterPage} />
-        <Route path="/chapter/:chapterId/practice" component={PracticePage} />
-        <Route
-          path="/chapter/:chapterId/flashcards"
-          component={FlashcardsPage}
-        />
         <Route path="/lesson/:lessonId" component={LessonPage} />
+        <Route path="/practice/:chapterId" component={PracticePage} />
+        <Route path="/flashcards/:chapterId" component={FlashcardsPage} />
       </Switch>
     </Provider>
   );

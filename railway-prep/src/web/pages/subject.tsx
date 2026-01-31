@@ -1,20 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
-
-interface Chapter {
-  id: string;
-  title: string;
-  description: string | null;
-  lessonCount: number;
-  mcqCount: number;
-}
-
-interface SubjectData {
-  id: string;
-  name: string;
-  exam: { id: string; name: string };
-  chapters: Chapter[];
-}
+import { mockSubject, type SubjectData } from "../../data/mockSubjectData";
 
 const ChevronLeft = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -37,7 +23,20 @@ export default function SubjectPage() {
     fetch(`/api/v1/subjects/${subjectId}`)
       .then(res => res.json())
       .then(data => {
-        if (data.success) setSubject(data.data);
+        if (data.success) {
+          setSubject(data.data);
+        } else {
+          // Use mock data if API fails
+          if (subjectId === mockSubject.id) {
+            setSubject(mockSubject);
+          }
+        }
+      })
+      .catch(() => {
+        // Use mock data on error
+        if (subjectId === mockSubject.id) {
+          setSubject(mockSubject);
+        }
       })
       .finally(() => setLoading(false));
   }, [subjectId]);
