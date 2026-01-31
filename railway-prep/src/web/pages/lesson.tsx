@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
+import AIChat from "../components/ai-chat";
 
 interface Note {
   id: string;
@@ -146,6 +147,13 @@ export default function LessonPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-5 py-8">
+        {/* AI Chat Component */}
+        <AIChat 
+          lessonContext={{
+            title: lesson.title,
+            content: lesson.content
+          }}
+        />
         {/* Title */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
           <h1 className="text-2xl font-bold text-[#1F2937] mb-3">{lesson.title}</h1>

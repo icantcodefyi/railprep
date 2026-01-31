@@ -45,10 +45,10 @@ export default function SubjectPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F9FAFB]">
-        <header className="bg-white border-b border-gray-200 px-5 py-5 shadow-sm">
+        <header className="bg-white px-5 py-6 mb-6">
           <div className="max-w-3xl mx-auto h-8 w-40 bg-gray-100 rounded-lg animate-pulse" />
         </header>
-        <main className="max-w-3xl mx-auto px-5 py-8 space-y-4">
+        <main className="max-w-3xl mx-auto px-5 pb-8 flex flex-col gap-6">
           {[1, 2, 3, 4].map(i => (
             <div key={i} className="h-24 bg-white rounded-2xl animate-pulse shadow-sm" />
           ))}
@@ -68,10 +68,10 @@ export default function SubjectPage() {
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-5 py-5 shadow-sm">
+      <header className="bg-white px-5 py-6 mb-6">
         <div className="max-w-3xl mx-auto">
           <Link href={`/exam/${subject.exam.id}`}>
-            <a className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#EB4B7A] mb-3 font-medium transition-colors">
+            <a className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#EB4B7A] mb-4 font-medium transition-colors">
               <ChevronLeft className="w-4 h-4" />
               {subject.exam.name}
             </a>
@@ -81,25 +81,25 @@ export default function SubjectPage() {
       </header>
 
       {/* Chapters List */}
-      <main className="max-w-3xl mx-auto px-5 py-8">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-[#1F2937] mb-1">
+      <main className="max-w-3xl mx-auto px-5 pb-8">
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
             Chapters
           </h2>
           <p className="text-sm text-gray-600">{subject.chapters.length} chapters to master</p>
         </div>
 
-        <div className="space-y-4">
+        <div className="flex flex-col gap-6">
           {subject.chapters.map((chapter, idx) => (
             <Link key={chapter.id} href={`/chapter/${chapter.id}`}>
-              <a className="block p-5 bg-white hover:bg-gray-50 rounded-2xl transition-all duration-200 group shadow-sm hover:shadow-md border border-gray-100">
+              <a className="block p-6 bg-white hover:bg-gray-50 rounded-2xl transition-all duration-200 group shadow-sm hover:shadow-md border border-gray-100">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] text-white flex items-center justify-center text-base font-semibold shrink-0 shadow-md">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] text-white flex items-center justify-center text-base font-semibold shrink-0">
                       {idx + 1}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-[#1F2937] text-base mb-2">{chapter.title}</h3>
+                      <h3 className="font-semibold text-[#1F2937] text-base mb-3">{chapter.title}</h3>
                       <div className="flex items-center gap-4 text-sm text-gray-600">
                         <span className="flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#EB4B7A]"></span>

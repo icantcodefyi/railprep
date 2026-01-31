@@ -59,10 +59,10 @@ export default function ChapterPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F9FAFB]">
-        <header className="bg-white border-b border-gray-200 px-5 py-5 shadow-sm">
+        <header className="bg-white px-5 py-6 mb-6">
           <div className="max-w-3xl mx-auto h-8 w-40 bg-gray-100 rounded-lg animate-pulse" />
         </header>
-        <main className="max-w-3xl mx-auto px-5 py-8 space-y-4">
+        <main className="max-w-3xl mx-auto px-5 pb-8 flex flex-col gap-6">
           {[1, 2, 3].map(i => (
             <div key={i} className="h-20 bg-white rounded-2xl animate-pulse shadow-sm" />
           ))}
@@ -82,10 +82,10 @@ export default function ChapterPage() {
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-5 py-5 shadow-sm">
+      <header className="bg-white px-5 py-6 mb-6">
         <div className="max-w-3xl mx-auto">
           <Link href={`/subject/${chapter.subject.id}`}>
-            <a className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#EB4B7A] mb-3 font-medium transition-colors">
+            <a className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#EB4B7A] mb-4 font-medium transition-colors">
               <ChevronLeft className="w-4 h-4" />
               {chapter.subject.name}
             </a>
@@ -97,11 +97,11 @@ export default function ChapterPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-5 py-8">
+      <main className="max-w-3xl mx-auto px-5 pb-8">
         {/* Practice MCQs Card */}
         {chapter.mcqCount > 0 && (
           <Link href={`/chapter/${chapter.id}/practice`}>
-            <a className="block p-6 bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] hover:from-[#D94069] hover:to-[#F17FA0] rounded-2xl transition-all duration-200 mb-6 text-white shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 group">
+            <a className="block p-6 bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] hover:from-[#D94069] hover:to-[#F17FA0] rounded-2xl transition-all duration-200 mb-8 text-white shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 group">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
@@ -123,24 +123,24 @@ export default function ChapterPage() {
         {/* Lessons List */}
         {chapter.lessons.length > 0 && (
           <>
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold text-[#1F2937] mb-1">
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
                 Lessons
               </h2>
               <p className="text-sm text-gray-600">{chapter.lessons.length} lessons to complete</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="flex flex-col gap-6">
               {chapter.lessons.map((lesson, idx) => (
                 <Link key={lesson.id} href={`/lesson/${lesson.id}`}>
-                  <a className="block p-5 bg-white hover:bg-gray-50 rounded-2xl transition-all duration-200 group shadow-sm hover:shadow-md border border-gray-100">
+                  <a className="block p-6 bg-white hover:bg-gray-50 rounded-2xl transition-all duration-200 group shadow-sm hover:shadow-md border border-gray-100">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 text-[#1F2937] flex items-center justify-center text-sm font-semibold">
                           {idx + 1}
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-[#1F2937] text-base mb-2">{lesson.title}</h3>
+                          <h3 className="font-semibold text-[#1F2937] text-base mb-3">{lesson.title}</h3>
                           <div className="flex items-center gap-3">
                             {lesson.durationMinutes && (
                               <span className="text-xs text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">

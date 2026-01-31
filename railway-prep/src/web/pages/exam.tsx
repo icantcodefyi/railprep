@@ -15,19 +15,37 @@ interface ExamData {
 }
 
 const ChevronLeft = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <polyline points="15 18 9 12 15 6" />
   </svg>
 );
 
 const ChevronRight = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <polyline points="9 18 15 12 9 6" />
   </svg>
 );
 
 const BookIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
   </svg>
 );
@@ -39,8 +57,8 @@ export default function ExamPage() {
 
   useEffect(() => {
     fetch(`/api/v1/exams/${examId}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (data.success) setExam(data.data);
       })
       .finally(() => setLoading(false));
@@ -49,12 +67,15 @@ export default function ExamPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F9FAFB]">
-        <header className="bg-white border-b border-gray-200 px-5 py-5 shadow-sm">
+        <header className="bg-white px-5 py-6 mb-6">
           <div className="max-w-3xl mx-auto h-8 w-40 bg-gray-100 rounded-lg animate-pulse" />
         </header>
-        <main className="max-w-3xl mx-auto px-5 py-8 space-y-4">
-          {[1, 2, 3, 4].map(i => (
-            <div key={i} className="h-20 bg-white rounded-2xl animate-pulse shadow-sm" />
+        <main className="max-w-3xl mx-auto px-5 pb-8 flex flex-col gap-6">
+          {[1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="h-20 bg-white rounded-2xl animate-pulse shadow-sm"
+            />
           ))}
         </main>
       </div>
@@ -72,10 +93,10 @@ export default function ExamPage() {
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-5 py-5 shadow-sm">
+      <header className="bg-white px-5 py-6 mb-6">
         <div className="max-w-3xl mx-auto">
           <Link href="/">
-            <a className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#EB4B7A] mb-3 font-medium transition-colors">
+            <a className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-[#EB4B7A] mb-4 font-medium transition-colors">
               <ChevronLeft className="w-4 h-4" />
               Back to Exams
             </a>
@@ -85,27 +106,32 @@ export default function ExamPage() {
       </header>
 
       {/* Subjects List */}
-      <main className="max-w-3xl mx-auto px-5 py-8">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-[#1F2937] mb-1">
+      <main className="max-w-3xl mx-auto px-5 pb-8">
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
             Subjects
           </h2>
-          <p className="text-sm text-gray-600">{exam.subjects.length} subjects available</p>
+          <p className="text-sm text-gray-600">
+            {exam.subjects.length} subjects available
+          </p>
         </div>
 
-        <div className="space-y-4">
-          {exam.subjects.map(subject => (
+        <div className="flex flex-col gap-6">
+          {exam.subjects.map((subject) => (
             <Link key={subject.id} href={`/subject/${subject.id}`}>
-              <a className="block p-5 bg-white hover:bg-gray-50 rounded-2xl transition-all duration-200 group shadow-sm hover:shadow-md border border-gray-100">
+              <a className="block p-6 bg-white hover:bg-gray-50 rounded-2xl transition-all duration-200 group shadow-sm hover:shadow-md border border-gray-100">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EB4B7A]/10 to-[#F58FB0]/10 flex items-center justify-center">
                       <BookIcon className="w-6 h-6 text-[#EB4B7A]" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-[#1F2937] text-base mb-1">{subject.name}</h3>
+                      <h3 className="font-semibold text-[#1F2937] text-base mb-2">
+                        {subject.name}
+                      </h3>
                       <p className="text-sm text-gray-600">
-                        {subject.chapterCount} {subject.chapterCount === 1 ? 'Chapter' : 'Chapters'}
+                        {subject.chapterCount}{" "}
+                        {subject.chapterCount === 1 ? "Chapter" : "Chapters"}
                       </p>
                     </div>
                   </div>
