@@ -21,6 +21,26 @@ export interface Topic {
   memoryTricks: MemoryTrick[];
 }
 
+export interface PracticeQuestion {
+  id: string;
+  question: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+  correctOption: string;
+  explanation: string;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+}
+
+export interface Flashcard {
+  id: string;
+  question: string;
+  answer: string;
+  topic: string;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+}
+
 export interface LessonData {
   id: string;
   title: string;
@@ -35,6 +55,8 @@ export interface LessonData {
   quickRevisionPoints: string[];
   commonMistakes: string[];
   examTips: string[];
+  practiceQuestions?: PracticeQuestion[];
+  flashcards?: Flashcard[];
   prevLesson: { id: string; title: string } | null;
   nextLesson: { id: string; title: string } | null;
 }
@@ -314,6 +336,109 @@ The **Indian Constitution** is the supreme law of India. It was adopted on **26t
     '💡 Practice MCQs on Fundamental Rights - most common topic!',
     '💡 Know the difference between Fundamental Rights (enforceable) and DPSP (not enforceable)',
     '💡 Recent amendments are frequently asked - especially GST (101st)'
+  ],
+
+  practiceQuestions: [
+    {
+      id: 'q1',
+      question: 'When was the Indian Constitution adopted?',
+      optionA: '26th January 1950',
+      optionB: '26th November 1949',
+      optionC: '15th August 1947',
+      optionD: '26th January 1949',
+      correctOption: 'B',
+      explanation: 'The Indian Constitution was adopted on 26th November 1949, but it came into effect on 26th January 1950, which is celebrated as Republic Day.',
+      difficulty: 'EASY'
+    },
+    {
+      id: 'q2',
+      question: 'How many Fundamental Rights are there in the Indian Constitution?',
+      optionA: '5',
+      optionB: '6',
+      optionC: '7',
+      optionD: '8',
+      correctOption: 'B',
+      explanation: 'There are 6 Fundamental Rights in the Indian Constitution. Originally there were 7, but the Right to Property was removed from Fundamental Rights in 1978 by the 44th Amendment.',
+      difficulty: 'EASY'
+    },
+    {
+      id: 'q3',
+      question: 'Which article is called the "Heart and Soul" of the Constitution?',
+      optionA: 'Article 14',
+      optionB: 'Article 19',
+      optionC: 'Article 21',
+      optionD: 'Article 32',
+      correctOption: 'D',
+      explanation: 'Dr. B.R. Ambedkar called Article 32 (Right to Constitutional Remedies) the "Heart and Soul" of the Constitution as it provides the right to move to the Supreme Court for enforcement of Fundamental Rights.',
+      difficulty: 'MEDIUM'
+    },
+    {
+      id: 'q4',
+      question: 'Which amendment is known as the "Mini Constitution"?',
+      optionA: '42nd Amendment',
+      optionB: '44th Amendment',
+      optionC: '73rd Amendment',
+      optionD: '86th Amendment',
+      correctOption: 'A',
+      explanation: 'The 42nd Amendment (1976) is called the "Mini Constitution" because it made extensive changes to the Constitution, including adding Fundamental Duties and the words Socialist, Secular, and Integrity to the Preamble.',
+      difficulty: 'MEDIUM'
+    },
+    {
+      id: 'q5',
+      question: 'How many languages are recognized in the 8th Schedule of the Constitution?',
+      optionA: '18',
+      optionB: '20',
+      optionC: '22',
+      optionD: '24',
+      correctOption: 'C',
+      explanation: 'The 8th Schedule of the Indian Constitution currently recognizes 22 languages. Originally, it had 14 languages.',
+      difficulty: 'EASY'
+    }
+  ],
+
+  flashcards: [
+    {
+      id: 'fc1',
+      question: 'When was the Indian Constitution adopted and enforced?',
+      answer: 'Adopted: 26th November 1949 (Constitution Day)\nEnforced: 26th January 1950 (Republic Day)',
+      topic: 'Basic Facts',
+      difficulty: 'EASY'
+    },
+    {
+      id: 'fc2',
+      question: 'Who is known as the Father of the Indian Constitution?',
+      answer: 'Dr. B.R. Ambedkar, who was the Chairman of the Drafting Committee of the Constituent Assembly.',
+      topic: 'Basic Facts',
+      difficulty: 'EASY'
+    },
+    {
+      id: 'fc3',
+      question: 'List the 6 Fundamental Rights',
+      answer: '1. Right to Equality (14-18)\n2. Right to Freedom (19-22)\n3. Right against Exploitation (23-24)\n4. Right to Freedom of Religion (25-28)\n5. Cultural & Educational Rights (29-30)\n6. Right to Constitutional Remedies (32)',
+      topic: 'Fundamental Rights',
+      difficulty: 'MEDIUM'
+    },
+    {
+      id: 'fc4',
+      question: 'What are the 5 Writs under Article 32?',
+      answer: '1. Habeas Corpus - produce the person\n2. Mandamus - command to perform duty\n3. Prohibition - stop lower court\n4. Certiorari - quash order\n5. Quo Warranto - question authority',
+      topic: 'Fundamental Rights',
+      difficulty: 'HARD'
+    },
+    {
+      id: 'fc5',
+      question: 'What is the 42nd Amendment known for?',
+      answer: 'Known as "Mini Constitution" (1976):\n- Added Fundamental Duties\n- Added Socialist, Secular, Integrity to Preamble\n- Made extensive constitutional changes',
+      topic: 'Amendments',
+      difficulty: 'MEDIUM'
+    },
+    {
+      id: 'fc6',
+      question: 'Difference between 73rd and 74th Amendments?',
+      answer: '73rd Amendment (1992): Panchayati Raj - Rural local governance\n74th Amendment (1992): Municipalities - Urban local governance',
+      topic: 'Amendments',
+      difficulty: 'MEDIUM'
+    }
   ],
   
   prevLesson: {

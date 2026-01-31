@@ -30,10 +30,11 @@ const MicIcon = ({ className }: { className?: string }) => (
 );
 
 const SparklesIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 3l1.545 4.635L18 9.18l-4.635 1.545L12 15.36l-1.545-4.635L6 9.18l4.635-1.545L12 3z" />
-    <path d="M19 12l.774 2.318L22 15.092l-2.318.774L19 18.184l-.774-2.318L16 15.092l2.318-.774L19 12z" />
-    <path d="M7 20l.387 1.159L8.5 21.546l-1.159.387L7 23.092l-.387-1.159L5.5 21.546l1.159-.387L7 20z" />
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2l2.4 7.2H22l-6 4.8 2.4 7.2L12 16.8 5.6 21.2 8 14l-6-4.8h7.6L12 2z" opacity="0.9" />
+    <circle cx="19" cy="5" r="1.5" />
+    <circle cx="5" cy="19" r="1.5" />
+    <circle cx="19" cy="19" r="1" />
   </svg>
 );
 
@@ -59,17 +60,23 @@ export default function AIChat({ lessonContext }: AIChatProps) {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
+      recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = 'en-US';
 
       recognitionRef.current.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0])
+          .map((result: any) => result.transcript)
+          .join('');
         setInput(transcript);
-        setIsListening(false);
       };
 
-      recognitionRef.current.onerror = () => {
+      recognitionRef.current.onerror = (event: any) => {
+        console.error('Speech recognition error:', event.error);
         setIsListening(false);
+        if (event.error === 'not-allowed') {
+          alert('Microphone access denied. Please allow microphone access in your browser settings.');
+        }
       };
 
       recognitionRef.current.onend = () => {
@@ -84,16 +91,26 @@ export default function AIChat({ lessonContext }: AIChatProps) {
 
   const toggleListening = () => {
     if (!recognitionRef.current) {
-      alert('Speech recognition is not supported in your browser');
+      alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
       return;
     }
 
     if (isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (error) {
+        console.error('Error stopping recognition:', error);
+      }
       setIsListening(false);
     } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      try {
+        setIsListening(true);
+        recognitionRef.current.start();
+      } catch (error) {
+        console.error('Error starting recognition:', error);
+        setIsListening(false);
+        alert('Could not start voice recognition. Please try again.');
+      }
     }
   };
 

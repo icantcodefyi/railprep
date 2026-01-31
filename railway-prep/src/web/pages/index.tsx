@@ -53,16 +53,32 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-[#F9FAFB]">
       {/* Header */}
-      <header className="bg-white px-5 py-6 mb-6">
-        <div className="max-w-3xl mx-auto flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] flex items-center justify-center">
-            <TrainIcon className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-semibold text-[#1F2937]">
-              Railway Prep
-            </h1>
-            <p className="text-sm text-gray-500">RRB Exam Preparation</p>
+      <header className="bg-white px-5 py-6 mb-6 shadow-sm">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] flex items-center justify-center">
+                <TrainIcon className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-semibold text-[#1F2937]">
+                  Railway Prep
+                </h1>
+                <p className="text-sm text-gray-500">RRB Exam Preparation</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link href="/search">
+                <a className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#EB4B7A] hover:bg-gray-100 rounded-xl transition-all">
+                  Search
+                </a>
+              </Link>
+              <Link href="/dashboard">
+                <a className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#EB4B7A] to-[#F58FB0] text-white rounded-xl hover:shadow-lg transition-all">
+                  Dashboard
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
@@ -77,7 +93,8 @@ export default function Index() {
             </h2>
           </div>
           <p className="text-sm text-gray-700 mb-4">
-            Check out our sample lesson with memory tricks, quick revision points, and AI chatbot assistance!
+            Check out our sample lesson with memory tricks, quick revision
+            points, and AI chatbot assistance!
           </p>
           <Link href={`/lesson/${mockLesson.id}`}>
             <a className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-200 group">

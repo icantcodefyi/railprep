@@ -1,37 +1,39 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
-
-interface Lesson {
-  id: string;
-  title: string;
-  durationMinutes: number | null;
-  difficulty: string;
-}
-
-interface ChapterData {
-  id: string;
-  title: string;
-  description: string | null;
-  subject: { id: string; name: string };
-  exam: { id: string; name: string };
-  lessons: Lesson[];
-  mcqCount: number;
-}
+import { mockChapter, type ChapterData } from "../../data/mockChapterData";
 
 const ChevronLeft = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <polyline points="15 18 9 12 15 6" />
   </svg>
 );
 
 const ChevronRight = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <polyline points="9 18 15 12 9 6" />
   </svg>
 );
 
 const PlayIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" />
   </svg>
 );
@@ -48,10 +50,24 @@ export default function ChapterPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Try to fetch from API first, fallback to mock data
     fetch(`/api/v1/chapters/${chapterId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) setChapter(data.data);
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setChapter(data.data);
+        } else {
+          // Use mock data if API fails
+          if (chapterId === mockChapter.id) {
+            setChapter(mockChapter);
+          }
+        }
+      })
+      .catch(() => {
+        // Use mock data on error
+        if (chapterId === mockChapter.id) {
+          setChapter(mockChapter);
+        }
       })
       .finally(() => setLoading(false));
   }, [chapterId]);
@@ -63,8 +79,11 @@ export default function ChapterPage() {
           <div className="max-w-3xl mx-auto h-8 w-40 bg-gray-100 rounded-lg animate-pulse" />
         </header>
         <main className="max-w-3xl mx-auto px-5 pb-8 flex flex-col gap-6">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-20 bg-white rounded-2xl animate-pulse shadow-sm" />
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-20 bg-white rounded-2xl animate-pulse shadow-sm"
+            />
           ))}
         </main>
       </div>
@@ -90,7 +109,9 @@ export default function ChapterPage() {
               {chapter.subject.name}
             </a>
           </Link>
-          <h1 className="text-2xl font-semibold text-[#1F2937] mb-2">{chapter.title}</h1>
+          <h1 className="text-2xl font-semibold text-[#1F2937] mb-2">
+            {chapter.title}
+          </h1>
           {chapter.description && (
             <p className="text-sm text-gray-600">{chapter.description}</p>
           )}
@@ -98,27 +119,44 @@ export default function ChapterPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-5 pb-8">
-        {/* Practice MCQs Card */}
-        {chapter.mcqCount > 0 && (
-          <Link href={`/chapter/${chapter.id}/practice`}>
-            <a className="block p-6 bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] hover:from-[#D94069] hover:to-[#F17FA0] rounded-2xl transition-all duration-200 mb-8 text-white shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 group">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                    <PlayIcon className="w-7 h-7" />
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-2 gap-4 mb-8">
+          {/* Practice MCQs Card */}
+          {chapter.mcqCount > 0 && (
+            <Link href={`/practice/${chapter.id}`}>
+              <a className="block p-6 bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] hover:from-[#D94069] hover:to-[#F17FA0] rounded-2xl transition-all duration-200 text-white shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 group">
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <PlayIcon className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg mb-1">Practice MCQs</h3>
-                    <p className="text-sm text-white/90">{chapter.mcqCount} questions available</p>
+                    <h3 className="font-semibold text-base mb-1">
+                      Practice MCQs
+                    </h3>
+                    <p className="text-xs text-white/90">
+                      {chapter.mcqCount} questions
+                    </p>
                   </div>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                  <ChevronRight className="w-5 h-5 text-white" />
+              </a>
+            </Link>
+          )}
+
+          {/* Flashcards Card */}
+          <Link href={`/flashcards/${chapter.id}`}>
+            <a className="block p-6 bg-gradient-to-br from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 rounded-2xl transition-all duration-200 text-white shadow-lg shadow-purple-200 hover:shadow-xl hover:shadow-purple-300 group">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <span className="text-2xl">🎴</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-base mb-1">Flashcards</h3>
+                  <p className="text-xs text-white/90">Quick revision mode</p>
                 </div>
               </div>
             </a>
           </Link>
-        )}
+        </div>
 
         {/* Lessons List */}
         {chapter.lessons.length > 0 && (
@@ -127,7 +165,9 @@ export default function ChapterPage() {
               <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
                 Lessons
               </h2>
-              <p className="text-sm text-gray-600">{chapter.lessons.length} lessons to complete</p>
+              <p className="text-sm text-gray-600">
+                {chapter.lessons.length} lessons to complete
+              </p>
             </div>
 
             <div className="flex flex-col gap-6">
@@ -140,14 +180,18 @@ export default function ChapterPage() {
                           {idx + 1}
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-semibold text-[#1F2937] text-base mb-3">{lesson.title}</h3>
+                          <h3 className="font-semibold text-[#1F2937] text-base mb-3">
+                            {lesson.title}
+                          </h3>
                           <div className="flex items-center gap-3">
                             {lesson.durationMinutes && (
                               <span className="text-xs text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
                                 {lesson.durationMinutes} min
                               </span>
                             )}
-                            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${difficultyColors[lesson.difficulty] || 'bg-gray-100 text-gray-600'}`}>
+                            <span
+                              className={`text-xs px-2.5 py-1 rounded-full font-medium ${difficultyColors[lesson.difficulty] || "bg-gray-100 text-gray-600"}`}
+                            >
                               {lesson.difficulty}
                             </span>
                           </div>
