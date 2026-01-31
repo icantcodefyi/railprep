@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { mockLesson } from "../../data/mockLessonData";
 
 interface Exam {
   id: string;
@@ -66,8 +67,26 @@ export default function Index() {
         </div>
       </header>
 
-      {/* Exams List */}
+      {/* Demo Lesson Card */}
       <main className="max-w-3xl mx-auto px-5 pb-8">
+        <div className="mb-8 p-6 bg-gradient-to-br from-[#EB4B7A]/10 to-[#F58FB0]/10 rounded-2xl border-2 border-[#EB4B7A]/20">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-2xl">🎓</span>
+            <h2 className="text-lg font-bold text-[#1F2937]">
+              Demo Lesson Available!
+            </h2>
+          </div>
+          <p className="text-sm text-gray-700 mb-4">
+            Check out our sample lesson with memory tricks, quick revision points, and AI chatbot assistance!
+          </p>
+          <Link href={`/lesson/${mockLesson.id}`}>
+            <a className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-br from-[#EB4B7A] to-[#F58FB0] text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-200 group">
+              <span>View Demo Lesson: {mockLesson.title}</span>
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </Link>
+        </div>
+
         <div className="mb-8">
           <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
             Choose Your Exam

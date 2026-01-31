@@ -1,27 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import AIChat from "../components/ai-chat";
-
-interface Note {
-  id: string;
-  title: string;
-  content: string;
-  isHighlighted: boolean;
-}
-
-interface LessonData {
-  id: string;
-  title: string;
-  content: string;
-  durationMinutes: number | null;
-  difficulty: string;
-  chapter: { id: string; title: string };
-  subject: { id: string; name: string };
-  exam: { id: string; name: string };
-  notes: Note[];
-  prevLesson: { id: string; title: string } | null;
-  nextLesson: { id: string; title: string } | null;
-}
+import { mockLesson, type LessonData, type Note, type Topic, type MemoryTrick } from "../../data/mockLessonData";
 
 const ChevronLeft = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -38,6 +18,43 @@ const ChevronRight = ({ className }: { className?: string }) => (
 const StarIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
+const LightbulbIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M9 18h6" />
+    <path d="M10 22h4" />
+    <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8a6 6 0 0 0-12 0c0 1.33.47 2.48 1.5 3.5.76.76 1.23 1.52 1.41 2.5" />
+  </svg>
+);
+
+const BrainIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+    <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
+    <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
+    <path d="M17.599 6.5a3 3 0 0 0 .399-1.375" />
+    <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+    <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+    <path d="M19.938 10.5a4 4 0 0 1 .585.396" />
+    <path d="M6 18a4 4 0 0 1-1.967-.516" />
+    <path d="M19.967 17.484A4 4 0 0 1 18 18" />
+  </svg>
+);
+
+const AlertIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="8" x2="12" y2="12" />
+    <line x1="12" y1="16" x2="12.01" y2="16" />
+  </svg>
+);
+
+const CheckCircleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22 4 12 14.01 9 11.01" />
   </svg>
 );
 
@@ -95,12 +112,11 @@ export default function LessonPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/v1/lessons/${lessonId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) setLesson(data.data);
-      })
-      .finally(() => setLoading(false));
+    // Use mock data instead of API
+    setTimeout(() => {
+      setLesson(mockLesson);
+      setLoading(false);
+    }, 300);
   }, [lessonId]);
 
   if (loading) {
@@ -206,6 +222,97 @@ export default function LessonPage() {
                 <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">{note.content}</p>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Memory Tricks & Topics */}
+        {lesson.topics && lesson.topics.length > 0 && (
+          <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-2xl p-6 shadow-sm border-2 border-purple-200 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <BrainIcon className="w-6 h-6 text-purple-600" />
+              <h3 className="font-bold text-purple-900 text-lg">Memory Tricks & Easy Ways to Remember</h3>
+            </div>
+            <p className="text-sm text-purple-700 mb-4">These tricks will help you remember concepts quickly for the exam!</p>
+            
+            {lesson.topics.map(topic => (
+              <div key={topic.id} className="mb-5 last:mb-0 bg-white/80 backdrop-blur-sm p-5 rounded-xl border border-purple-100">
+                <h4 className="font-semibold text-purple-900 text-base mb-3 flex items-center gap-2">
+                  <LightbulbIcon className="w-5 h-5 text-amber-500" />
+                  {topic.title}
+                </h4>
+                <div className="space-y-3">
+                  {topic.memoryTricks.map((trick, idx) => (
+                    <div key={idx} className="pl-4 border-l-4 border-amber-400 bg-amber-50/50 p-3 rounded-r-lg">
+                      <p className="font-medium text-gray-800 text-sm mb-1">
+                        📌 {trick.concept}
+                      </p>
+                      <p className="text-purple-700 text-sm font-semibold mb-1">
+                        💡 Trick: {trick.trick}
+                      </p>
+                      {trick.example && (
+                        <p className="text-gray-600 text-xs italic">
+                          Example: {trick.example}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Quick Revision Points */}
+        {lesson.quickRevisionPoints && lesson.quickRevisionPoints.length > 0 && (
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 shadow-sm border-2 border-green-200 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <CheckCircleIcon className="w-6 h-6 text-green-600" />
+              <h3 className="font-bold text-green-900 text-lg">Quick Revision Points</h3>
+            </div>
+            <p className="text-sm text-green-700 mb-4">Skim through these before the exam!</p>
+            <div className="grid gap-2">
+              {lesson.quickRevisionPoints.map((point, idx) => (
+                <div key={idx} className="bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-green-100 text-sm text-gray-800">
+                  {point}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Common Mistakes */}
+        {lesson.commonMistakes && lesson.commonMistakes.length > 0 && (
+          <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 shadow-sm border-2 border-red-200 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <AlertIcon className="w-6 h-6 text-red-600" />
+              <h3 className="font-bold text-red-900 text-lg">Common Mistakes to Avoid</h3>
+            </div>
+            <p className="text-sm text-red-700 mb-4">Don't fall into these traps!</p>
+            <div className="space-y-2">
+              {lesson.commonMistakes.map((mistake, idx) => (
+                <div key={idx} className="bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-red-100 text-sm text-gray-800">
+                  {mistake}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Exam Tips */}
+        {lesson.examTips && lesson.examTips.length > 0 && (
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 shadow-sm border-2 border-blue-200 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <LightbulbIcon className="w-6 h-6 text-blue-600" />
+              <h3 className="font-bold text-blue-900 text-lg">Exam Tips & Strategy</h3>
+            </div>
+            <p className="text-sm text-blue-700 mb-4">Smart tips to score better!</p>
+            <div className="space-y-2">
+              {lesson.examTips.map((tip, idx) => (
+                <div key={idx} className="bg-white/80 backdrop-blur-sm p-3 rounded-lg border border-blue-100 text-sm text-gray-800">
+                  {tip}
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

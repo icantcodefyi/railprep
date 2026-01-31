@@ -13,22 +13,34 @@ app.post('/chat', async (c) => {
   try {
     const { messages, lessonContext } = await c.req.json();
     
-    const apiKey = c.env?.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    // Use the provided API key
+    const apiKey = c.env?.GEMINI_API_KEY || process.env.GEMINI_API_KEY || 'AIzaSyD64r3ZlEFrU0gWGPmOqxMW5HRVdpzVH84';
     
     if (!apiKey) {
       return c.json({ error: 'API key not configured' }, 500);
     }
 
     const systemPrompt = lessonContext 
-      ? `You are a helpful AI tutor assistant for railway exam preparation. The student is currently studying: "${lessonContext.title}". 
-      
-Context: ${lessonContext.content}
+      ? `You are a helpful AI tutor assistant for Indian Railway exam preparation (RRB NTPC, Group D, ALP, JE, etc.). The student is currently studying: "${lessonContext.title}". 
 
-Help students understand concepts, clarify doubts, and provide explanations related to this lesson. Be concise, clear, and encouraging. If the question is outside the lesson scope, gently guide them back to the topic.`
-      : 'You are a helpful AI tutor assistant for railway exam preparation. Help students with their questions clearly and concisely.';
+Context from the lesson:
+${lessonContext.content}
+
+Your role:
+- Help students understand concepts from this lesson
+- Clarify doubts and provide clear explanations
+- Create memory tricks and mnemonics when asked
+- Explain concepts in simple, exam-focused language
+- Provide quick revision tips
+- If asked about topics outside this lesson, still help but mention it's beyond the current lesson scope
+- Be encouraging and supportive
+- Keep answers concise and exam-oriented (railway exams are time-bound, so focus on quick learning techniques)
+
+Remember: Railway exams require quick recall and skim-through knowledge, so emphasize memory tricks and shortcuts!`
+      : 'You are a helpful AI tutor assistant for Indian Railway exam preparation. Help students with their questions clearly, concisely, and provide memory tricks when possible.';
 
     const google = createGoogleGenerativeAI({ apiKey });
-    const model = google('gemini-1.5-flash');
+    const model = google('gemini-2.5-flash');
     
     const result = streamText({
       model,
